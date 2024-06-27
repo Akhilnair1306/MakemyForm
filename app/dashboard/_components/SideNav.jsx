@@ -60,8 +60,7 @@ function SideNav() {
             <div className='fixed bottom-10 p-6 w-64'>
                 <Button className='w-full'>+ Create Form</Button>
                 <div className='my-5'>
-                <Progress value={percFileCreated} />
-                <h2 className='text-sm mt-2'><strong>{formList?.length} </strong>Out of <strong>3</strong> File Created</h2>
+                <h2 className='text-sm mt-2'><strong>{formList?.length} </strong> File Created</h2>
                 </div>
             </div>
 
