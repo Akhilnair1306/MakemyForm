@@ -121,7 +121,7 @@ function EditForm({ params }) {
     return (
         <div className='p-10'>
             <div className='flex justify-between items-center'>
-                <h2 className='flex gap-2 items-center my-5 cursor-pointer hover:font-bold' onClick={() => router.back()}>
+                <h2 className='flex gap-2 items-center my-5 cursor-pointer hover:font-bold' onClick={() => router.push('/dashboard')}>
                     <ArrowLeft /> Back
                 </h2>
                 <div className='flex gap-2'>

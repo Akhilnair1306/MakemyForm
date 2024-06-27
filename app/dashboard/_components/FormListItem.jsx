@@ -14,7 +14,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useUser } from '@clerk/nextjs';
-import { Jsonforms } from '@/configs/schema';
+import { Jsonforms, userResponses } from '@/configs/schema'; // Make sure to import userResponses
 import { and, eq } from 'drizzle-orm';
 import { db } from '@/configs';
 import { toast } from 'sonner';
@@ -23,15 +23,22 @@ import { RWebShare } from 'react-web-share';
 function FormListItem({ formRecord, jsonForm, refreshData }) {
 
     const { user } = useUser();
+
     const onDeleteForm = async () => {
+        // First delete all userResponses that reference the formRecord
+        await db.delete(userResponses)
+            .where(eq(userResponses.formRef, formRecord.id));
+
+        // Then delete the formRecord
         const result = await db.delete(Jsonforms)
-            .where(and(eq(Jsonforms.id, formRecord.id), eq(Jsonforms.createdBy, user?.primaryEmailAddress?.emailAddress)))
+            .where(and(eq(Jsonforms.id, formRecord.id), eq(Jsonforms.createdBy, user?.primaryEmailAddress?.emailAddress)));
 
         if (result) {
             toast('Form Deleted!!!');
             refreshData();
         }
     }
+
     return (
         <div className='border shadow-sm rounded-lg p-4'>
             <div className='flex justify-between'>
@@ -56,7 +63,6 @@ function FormListItem({ formRecord, jsonForm, refreshData }) {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
-
             </div>
             <h2 className='text-lg text-black'>{jsonForm?.formTitle}</h2>
             <h2 className='text-sm text-gray-800'>{jsonForm?.formHeading}</h2>
@@ -64,8 +70,8 @@ function FormListItem({ formRecord, jsonForm, refreshData }) {
             <div className='flex justify-between'>
                 <RWebShare
                     data={{
-                        text: jsonForm?.formHeading+" ,Build your in Sec with makemyForm",
-                        url: process.env.NEXT_PUBLIC_BASE_URL+"/aiform/"+formRecord?.id,
+                        text: jsonForm?.formHeading + " ,Build your in Sec with makemyForm",
+                        url: process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + formRecord?.id,
                         title: jsonForm?.formTitle,
                     }}
                     onClick={() => console.log("shared successfully!")}
@@ -81,4 +87,4 @@ function FormListItem({ formRecord, jsonForm, refreshData }) {
     )
 }
 
-export default FormListItem
+export default FormListItem;

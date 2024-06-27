@@ -1,6 +1,13 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react';
+  // Adjust the import path as needed
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import CreateForm from '../dashboard/_components/CreateForm';
 
 function Hero() {
+    const [openDialog, setOpenDialog] = useState(false);
+
     return (
         <div>
             <section className="bg-gray-50">
@@ -12,16 +19,11 @@ function Hero() {
                         </h1>
 
                         <p className="mt-4 sm:text-xl/relaxed">
-                        Generate dynamic forms with unparalleled accuracy using AI technology. Simplify form creation, ensure precision, and effortlessly capture data with intelligently designed forms tailored to your needs. 
+                            Generate dynamic forms with unparalleled accuracy using AI technology. Simplify form creation, ensure precision, and effortlessly capture data with intelligently designed forms tailored to your needs.
                         </p>
 
                         <div className="mt-8 flex flex-wrap justify-center gap-4">
-                            <a
-                                className="block w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
-                                href="#"
-                            >
-                                + Create AI Form
-                            </a>
+                            <Button onClick={() => setOpenDialog(true)}>+ Create Form</Button>
 
                             <a
                                 className="block w-full rounded px-12 py-3 text-sm font-medium text-primary shadow hover:text-blue-700 focus:outline-none focus:ring active:text-red-500 sm:w-auto"
@@ -33,8 +35,9 @@ function Hero() {
                     </div>
                 </div>
             </section>
+            <CreateForm open={openDialog} onClose={() => setOpenDialog(false)} />
         </div>
-    )
+    );
 }
 
-export default Hero
+export default Hero;
